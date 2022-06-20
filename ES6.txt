@@ -1,0 +1,910 @@
+Lab setup:
+1.node js
+2.vs code
+3.mongodb
+.....................................................................................
+
+Pre Skill:
+
+1.HTML 5
+2.CSS 3
+3.Javascript - ES 6
+
+M        E        R       N
+|        |        |       |
+Mongodb Express   React  Node
+
+1.E6
+2.React && Redux
+3.Node.js - Express
+
+
+What is Javascript?
+
+java script is one of the Programming language.
+
+Style of Javascript:
+
+JS is Object based, functional style, event driven pl.
+
+
+Object based vs object oriented:
+................................
+
+Object Oriented Principles:
+...........................
+
+1.Abstraction
+2.Encapsulation
+3.Hierarchy
+4.Typing
+5.Modularity
+----------------------
+6.Concurrency
+7.Persistency
+
+if any language follows all oo concepts, object oriented language.
+
+if any language is not following any one object oriented principle or paritially implements
+that language is called as 'object based language'.
+
+What type of apps you can build using js?
+
+Today you can use js for building any type of apps - backend,front end, mobile apps
+
+JS created for HTML Document creation,maniupulation  language inside browser :DOM Programming.
+
+When js was created?
+
+In 1996, js was created by Netscap communications.
+
+
+1996 , JS submitted to ECMA Committe.
+
+1997-> JAVA SCRIPT 1.0 -> es 1
+es 3 -1999
+es 4 -2006
+es 5 -2007
+es 6 -2012-2015. - ecma 2015 es 6
+es6 7,8,9....
+....................................................................................
+				Program
+
+1.source code
+ Hello.java
+
+2.compile
+ javac Hello.java
+ Hello.class
+
+3.Run(execution)
+ Runtime - jvm
+
+
+Javascript execution Model:
+...........................
+
+1.source code
+ fileName.js
+
+2.Javascript Engine /JS Runtime /JS VM
+
+-embeded
+ -inside another program :  browser
+chrome - v8 
+firefox - spiderMonkey
+Edge - Chakra
+
+-standalone :outside browser
+ -google v8. -Node.js
+
+...................................................................................
+
+Whether js code is compiled or not?
+
+Yes!
+
+index.js
+ source code
+   |
+ feed into Browser
+   |
+  Js engine(v8)
+   |
+  load
+    |
+   parsing
+     |
+    compiler - compiling
+     |
+     ....
+	byte code
+      |
+   -----Runtime
+      Interpreter
+	| 
+      JIT
+       |
+    output
+..................................................................................
+
+Learning path:
+
+es 6:
+
+1. java  script LANGUAGE fundamentals
+2. java script functional programming 
+3. Object based features and implementation
+           isomorphic features  - features can be used in client and server
+.................................................................................................
+4. DOM 
+5. NETWORK Progamming - ajax
+etc....
+
+JS Fundmentals
+
+-variables
+-data types
+-values/literals
+-operators
+-control statement/structures
+-loops 
+-conditional statement.
+
+Variables,data/values: data type.
+..................................
+
+Programming languages can be classified based on data types(types)
+
+1.static langugages/strong typed programming language
+ if language compiler verifies , the type of variable during compile time, those languages
+are called static programming language.
+
+  int a=10;
+  a="hello" ; compile time error.
+
+eg : java,c++,c,C#,Kotlin
+
+
+2.dynamic languages/weak typed programming language.
+
+
+  if language compiler verifies , the type of variable during runtime time, those languages are called dynamic/weakly typed programming language.
+
+  var i=10
+  i="hello" // no error
+
+JS follows dynamic typed.
+
+
+
+1. java  script fundamentals
+
+variable,types, values.
+
+javascript is untyped/dyamic typed language.
+
+keyword variableName=value(literals)
+
+var | let | const | this | variablename=literal
+
+
+
+keyword variableName=value(literals)
+
+var | let | const | this | variablename=literal
+
+
+var-es5
+let and const -es6 to replace var.
+
+this - for object variables
+
+literals - values: based on literal only the type of variable is decided during runtime.
+
+
+types of literals
+
+1.string
+2.number
+3.boolean
+4.undefined
+5.nan
+6.infinity
+7.null
+8.function
+9.object
+
+types ;
+
+1.string
+2.number - number,infinity,NaN
+3.boolean
+4.undefined
+5.function
+6.object - null, object
+
+
+Strings:
+//variable declaration - strings
+//"",'', ``(es 6 notation)
+
+//es 5 declaration
+var firstName = 'Subramanian'
+//es 6 declaration : let/const vs var : to be dicussed later
+let lastName = 'Murugan'
+//string concatation using es 5 style
+console.log("Name " + firstName + lastName)
+console.log("Name ", firstName, lastName)
+//string concatation using es 6 style -  string interpolation using backtick notation 
+console.log(`Name  ${firstName} ${lastName}  `)
+
+let resource = 'customers'
+let url = `http://www.example.com/api/${resource}`
+
+
+//use case for back tick and interpolation : multi line 
+//multi line strings using es 5 pattern:
+let title = 'Google'
+let doc = "<html>" +
+    "<head>" +
+    "<title>" + title + "</title>" +
+    "</head>" +
+    "<body>" +
+    "<h1>Hello</h1>" +
+    "</body>";
+console.log(doc)
+
+let docOne = `<html>
+           <head>
+            <title>${title}</title>
+            </head>
+          <body>
+            <h1>Hello</h1>
+          </body>
+        `;
+console.log(docOne)
+
+
+booleans:
+1 bit value - true /false
+//booleans
+
+let isActive = true;
+let isEnabled = false;
+
+console.log(`IsActive ${isActive} isEnabled ${isEnabled}`)
+
+undefined:
+ The variable has no valid values(numbers,strings,boolean,infinity,object,function)
+
+//undefined
+let price;
+console.log(`Price is ${price}`)
+
+
+NaN:
+ Not a Number
+
+-NaN - not a number; it is numerical error code.during numerical computation, 
+
+js engine
+ -may throw error - NaN ; 
+ -NaN is not valid value, it is error , need to be fixed if you get.
+
+Two use cases of NaN
+1.computing against undefined.
+//NaN
+
+let qty; // undefined
+let price = 100; //number
+
+let totalPrice = qty * price
+console.log(`Qty ${qty} Price ${price} TotalPrice ${totalPrice}`)
+
+2.During type conversion -  string to number
+
+//NaN
+
+let qty; // undefined
+let price = 100; //number
+
+let totalPrice = qty * price
+console.log(`Qty ${qty} Price ${price} TotalPrice ${totalPrice}`)
+
+//type conversion
+
+let a = "10" // a value is 10 but its type is string 
+let b = 10; //b values 10 but its type is number
+let c = a * b  //string * number => (js converts string to number) and starts computation - implicit conversion
+console.log(`Implicit conversion - C ${c}`)
+
+//using conversion functions(apis) - parseInt,ParseFlot,Number(), unary+ operator
+
+//parse Function
+c = parseFloat(a) * b
+console.log(`Explicit conversion Using parseFunctions  - C ${c}`)
+
+//unary + 
+c = +a * b
+console.log(`Explicit conversion Using Unary +  - C ${c}`)
+console.log(`C ${c}`)
+
+//using Number
+c = Number(a) * b
+console.log(`Explicit conversion Using Number - C ${c}`)
+console.log(`C ${c}`)
+
+//NaN - During type conversion
+let x = "$10"
+let z = 30;
+let d = x * z
+console.log(`D ${d}`)
+.....................................................................................
+
+5.infinity
+
+-div/0 -
+
+let x =100;
+let y =0
+let c = x/y;
+console.log(`C ${c}`)
+.....................................................................................
+				Advanced boolean
+....................................................................................
+
+What can be true or false?
+
+decision making : if..else ,tenary operator
+
+in javascript is every thing is true execept the following values 
+
+Falsy values
+
+ * 
+ *  1.boolean false
+ *  2.Empty string "" ,''
+ *  3.0
+ *  4.undefined
+ *  5.NaN
+ *  6.null
+ */
+
+//which is true or false 
+
+let isEnabled = true
+
+if (isEnabled) {
+    console.log('ok')
+} else {
+    console.log('not ok')
+}
+//o is false
+let start = 0;
+
+if (start) {
+    console.log('ok')
+} else {
+    console.log('not ok')
+}
+
+//undefined
+let price;
+
+if (price) {
+    console.log('ok')
+} else {
+    console.log('not ok')
+}
+
+//Nan
+let total =  price *10;
+
+if (total) {
+    console.log('ok')
+} else {
+    console.log('not ok')
+}
+...................................................................................
+
+//tenary operator is replacment for if else 
+
+let isValid = true;
+
+let res = isValid ? "Valid" : "Invalid"
+
+console.log(res)
+
+let start = 0;
+let res1 = start ? 'Started' : "Not Started"
+
+.....
+
+==  and ===
+// == and ===
+
+/**
+ * == compare values
+ * === compare value + type => recommended
+ */
+
+let a = "10";
+let b = 10;
+
+let res = a === b ? "Equal" : "Not Equal"
+console.log(res)
+...................................................................................
+				functions
+
+
+//how to declare function 
+function sayHello() {
+    console.log("Hello")
+}
+//invoke 
+sayHello();
+
+args and parameters
+//parameters and args
+
+//name is arg
+//default arg : es 6 features 
+function sayHello(name = 'defaultValue') {
+    //console.log(`Hello ${name || 'default'}`) //es 5 feature to provide default value
+    console.log(`Hello ${name}`)
+}
+//parameter -Subramanian
+sayHello('Subramanian ')
+sayHello() //undefined
+
+function multiply(a = 0, b = 0) {
+    let c = a * b;
+    console.log(c);
+}
+multiply(10, 2)
+multiply()
+.....................................................................................
+
+Anonmous functions:
+
+//function literal:
+/**
+ * 
+ * literal means value, 
+ * let a =10;
+ * here 10 is literal, a is variable
+ * in js function itself literal.
+ * since it is literal, can be assinged to variable
+ * The variable can be used to invoke the function
+ */
+
+//function is declared and later assigned to a variable
+
+function add(a = 0, b = 0) {
+    return a + b;
+}
+console.log(add(10, 10))
+
+//assign function to a variable
+let addFunc = add;
+console.log(addFunc(45, 90))
+
+//function is declared and initalized there itself - anonmous function 
+//anonmous means function without name.
+
+let multiply = function (a = 0, b = 0) {
+    return a * b
+}
+console.log(multiply(10,10))
+
+Arrow functions:
+...............
+
+Arrow functions are replacement for anonmous es5 functions.
+
+//anonmous in es 5
+let multiply = function (a = 0, b = 0) {
+    return a * b
+}
+console.log(multiply(10, 10))
+
+//Arrow functions
+// let sayHello = function () {
+//     console.log('Hello')
+// }
+//simple arrow => (fat arrow)
+let sayHello = () => {
+    console.log('Hello')
+}
+sayHello()
+//if function has only one line of body, We can remove {}
+sayHello = () => console.log('Hello')
+sayHello()
+
+//arrow and parameters and args
+let add = (a = 0, b = 0) => {
+    let c = a + b
+    console.log(c)
+}
+add(1, 2)
+
+//return values and arrow 
+let sum = (a = 0, b = 0) => {
+    return a * b
+}
+console.log(sum(10, 10))
+//if function has only return statement, we can remove return statement and {}
+sum = (a = 0, b = 0) => a * b
+
+console.log(sum(10, 10))
+
+//single arg, no default value, return the same 
+let stock = (value) => {
+    return value;
+}
+console.log(stock(10))
+//if function has no default value with single arg, and return the same: remove (), remove return statement and {}
+stock = value => value * 10
+console.log(stock(10))
+..................................................................................
+				const
+
+// const and let are es 6 keywords to declare variables
+
+let a = 10;
+console.log(a)
+
+a = 90;
+console.log(a)
+
+//const means read only, const are used to avoid re intalization.
+const b = 10;
+console.log(b)
+b = 988; //index.js:12 Uncaught TypeError: Assignment to constant variable.
+console.log(b)
+....................................................................................
+			Object based concepts
+....................................................................................
+
+How to create objects in javascript?
+
+1.constructor pattern
+  1.2. functions - es 5 style
+  1.3. class keyword - es 6 style
+
+//es 5 style of declaring class
+function Employee(id = 0, name = '') {
+    //state: instance variables
+    this.id = id
+    this.name = name
+    //instance methods
+    this.calculateSalary = function () {
+        return 100
+    }
+}
+// create 
+//let is keyword
+//emp is reference variable which points objectF
+//new is keyword -  memory allocation operator
+// Employee() -  function call (Constructor call)
+let emp = new Employee(10,'Subramanian')
+console.log(`id ${emp.id} ${emp.name} ${emp.calculateSalary()}`)
+
+
+//object creation using function 
+
+//es 5 style of declaring class
+function Employee(id = 0, name = '') {
+    //state: instance variables
+    this.id = id
+    this.name = name
+    //instance methods
+    this.calculateSalary = function () {
+        return 100
+    }
+}
+// create 
+//let is keyword
+//emp is reference variable which points objectF
+//new is keyword -  memory allocation operator
+// Employee() -  function call (Constructor call)
+let emp = new Employee(10, 'Subramanian')
+console.log(`id ${emp.id} ${emp.name} ${emp.calculateSalary()}`)
+
+
+//es 6 way of declaration 
+class Customer {
+    //this.invoice : this keyword cant be used inside class directly
+    //constructor function :
+    constructor(id = 0, name = '') {
+        //state: instance variables
+        this.id = id
+        this.name = name
+    }
+    //instance methods
+    calculateTax() {
+        return 100
+    }
+    //arrow functions are allowed
+    calculateInvoice = () => 10
+}
+
+//there no difference in object creation
+let customer = new Customer()
+
+
+2.literal pattern
+//literal object 
+
+let customer = {
+    //state
+    id: 1,
+    name: 'Subramanian',
+    city: 'Coimbatore',
+    //methods
+    //way 1 : using es 5 function style
+    calculateA: function () {
+        return 10
+    },
+    //way 2 : using es 6 arrow style
+    calculateB: () => 10,
+    //way 3 : using es 6 class style
+    calculateC() {
+        return 10
+    }
+}
+console.log(`id ${customer.id} ${customer.name} ${customer.city} ${customer.calculateA()}`)
+...................................................................................
+				Hierachy - has-a , is-a
+
+has-a
+
+// has-a 
+
+class Address {
+    constructor(street = 'street', city = 'city') {
+        this.city = city;
+        this.street = city
+    }
+}
+
+class Employee {
+    constructor(id = 0, name = '', address = new Address()) {
+        this.id = id
+        this.name = name
+        //has-a 
+        this.address = address
+    }
+}
+let employee = new Employee(100, 'Subramanian', new Address('10th street', 'Coimbatore'))
+console.log(`${employee.id} ${employee.name} ${employee.address.city}`);
+
+//literal
+
+let product = {
+    id: 1,
+    name: 'phone',
+    //has-a - nested object 
+    category: {
+        item: 'Elelectronics'
+    }
+}
+console.log(`Product ${product.id} ${product.name} ${product.category.item}`)
+...................................................................................
+			inheritance - classes
+....................................................................................
+
+//parent
+class Account {
+    //id
+    id = 0
+    constructor() {
+        console.log('account')
+    }
+    deposit() {
+        return 100;
+    }
+}
+//child class 
+class SavingsAccount extends Account {
+    constructor() {
+        super()// this must be first line of constructor
+        console.log('sb account')
+    }
+    deposit() {
+        return 1000 * super.deposit();
+    }
+}
+let sb = new SavingsAccount()
+console.log(sb.id, sb.deposit())
+....................................................................................
+			Object Destructuring
+.....................................................................................
+//without destructuring
+// function printEmployee(employee) {
+//     //print employee 
+//     console.log(`Id ${employee.id}`)
+//     console.log(`Name ${employee.name}`)
+//     console.log(`City ${employee.address.city}`)
+// }
+
+//with es 6 destructuring concepts
+// function printEmployee(employee) {
+//     //destructuring
+//     //let or const {}= employee
+//     const { id, name, address } = employee
+//     //print employee 
+//     console.log(`Id ${id}`)
+//     console.log(`Name ${name}`)
+//     console.log(`City ${address.city}`)
+// }
+
+//nested object destructuring
+// function printEmployee(employee) {
+//     //destructuring
+//     //let or const {}= employee
+//     const { id, name, address: { city } } = employee
+//     //print employee 
+//     console.log(`Id ${id}`)
+//     console.log(`Name ${name}`)
+//     console.log(`City ${city}`)
+// }
+
+// function printEmployee({ id, name, address: { city } }) {
+//     //print employee 
+//     console.log(`Id ${id}`)
+//     console.log(`Name ${name}`)
+//     console.log(`City ${city}`)
+// }
+
+const printEmployee = ({ id, name, address: { city } }) => {
+    //print employee 
+    console.log(`Id ${id}`)
+    console.log(`Name ${name}`)
+    console.log(`City ${city}`)
+}
+printEmployee({
+    id: 1,
+    name: 'Ram',
+    address: {
+        city: 'Coimbatore'
+    }
+
+})
+..............................................................................
+			Returning Object and Destructuring
+...............................................................................
+//return object 
+//here we are printing hardcoded stock value
+// function getStock() {
+//     return {
+//         id: 1,
+//         symbol: 'google',
+//         qty: 100,
+//         price: 10000
+//     }
+// }
+
+//dynamic parameter without destructuring
+// function getStock(id = 1, symbol = 'google', qty = 0, price = 0) {
+//     return {
+//         id: id,
+//         symbol: symbol,
+//         qty: qty,
+//         price: price
+//     }
+// }
+
+// function getStock(id = 1, symbol = 'google', qty = 0, price = 0) {
+//     //here leftSide(id) is object instance variable
+//     //here rightSide(id) is local variable(function arg)
+//     /**
+//      *  if left side and right is same => make it one :
+//      *     */
+
+//     return {
+//         id,
+//         symbol,
+//         qty,
+//         price
+//     }
+// }
+
+const getStock = (id = 1, symbol = 'google', qty = 0, price = 0) => ({
+    id,
+    symbol,
+    qty,
+    price
+})
+
+console.log(getStock(1, 'MicroSoft', 100, 1000))
+
+
+
+class OrderService {
+
+    findOrders() {
+        return 'find Orders'
+    }
+    save() {
+        return 'save'
+    }
+    remove() {
+        return 'remove'
+    }
+}
+//how to create object 
+// let orderService = new OrderService()
+// console.log(orderService.findOrders())
+
+let { findOrders, save, remove } = new OrderService()
+console.log(findOrders(),save(),remove())
+....................................................................................
+				Javascript Modularity
+....................................................................................
+
+
+Modularity:
+..........
+
+In java Modularity , is presented via "Packages"
+
+Package organize the code  logically.
+
+Customer.java
+
+package com.ibm.cms
+
+public class Customer{}
+
+Java organizes code folders and files Physically.
+
+d:/javaapps/src/
+    com/ibm/cms/Customer.java
+
+
+What about javascript Modularity?
+
+ Javascript is file based modularity physically
+ but logically there is no such modularity at language level.
+
+ collection of variable declarations and function.
+
+Once js started growing in large scale, dev struck to organize code.
+
+2000, Smart developers started thinking about how to modualrize js code.
+ 
+
+Module design patterns came.
+
+1.Namespace design pattern : 2000 : jquery
+2.AMD -Async Module Defintion : dojo
+---------------------------------------------------------
+3.CJS - Common JS =  namespace + amd -2006
+4.ES 6 Module design pattern  = amd + cjs
+------------------------------------------------------------
+5.System = AMD = CJS + ES 6
+6.UMD = NAMESPACE + AMD + CJS = ES 6
+...........................................................................................
+The developer uses this design pattern now days
+3.CJS - Common JS =  namespace + amd -2006
+   Used inside node.js nativly
+4.ES 6 Module design pattern  = amd + cjs
+   Used inside browser apps, and even node apps as well.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
