@@ -893,11 +893,195 @@ The developer uses this design pattern now days
 4.ES 6 Module design pattern  = amd + cjs
    Used inside browser apps, and even node apps as well.
 
+......................................................................................
+
+ES 6 Module design pattern keywords
+
+how to share code?
+
+code could be any thing(variables,objects,class)
+
+export 
+export default
+
+
+How to link files and use shared code
+
+import
+
+Note: 
+Browser directly does not support any module patterns(es6 module) directly
+
+How to run?
+
+1.using build tools
+
+2.without using build tool also you can but which is not supported by all browsers
+  
+
+1.using build tools
+
+
+1.webpack
+
+How to install webpack in our project?
+
+Steps:
+
+1.make sure that you have package.json file
+ if not , create package.json file
+
+npm init
+
+
+2.install webpack
+  npm install webpack webpack-cli --save-dev
+
+
+3.add webpack.config.js in the project root dir
+const path = require('path');
+
+module.exports = {
+  entry: './src/index.js',
+  mode:'development',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js',
+  },
+};
 
 
 
+4.build /bundle your code
+ open package.json
+ add entry into scripts
+
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "tsc",
+    "build": "webpack --watch"
+  }
 
 
+5.start bundling
+  open cmd and run the following command
+npm run build
+
+
+..
+
+util.js
+//code 
+
+// export const firstName = 'Subramanian'
+// export const lastName = 'Murugan'
+// export const salary = 1000;
+// export const isActive = true;
+// export const getValue = () => 0;
+// export const list = ["Java", "React", "Javascript"]
+
+const firstName = 'Subramanian'
+const lastName = 'Murugan'
+const salary = 1000;
+const isActive = true;
+const getValue = () => 0;
+const list = ["Java", "React", "Javascript"]
+
+export { firstName, lastName, salary, isActive, getValue, list };
+
+index.js
+//link file 
+import { firstName, lastName, salary, isActive, getValue, list } from './util'
+
+console.log(firstName,lastName,salary,isActive,getValue(),list)
+
+
+export default vs export :
+
+1.export can be used for exporting multiple variables at a time.
+2.export default can be used for exporting only one thing at a time
+
+export default is used to export classes,single arrays,objects.
+
+
+src/customerService.js
+
+// export default class CustomerService {
+
+//     findAll() {
+//         return 'Customers'
+//     }
+//     save() {
+//         return 'save'
+//     }
+// }
+
+class CustomerService {
+
+    findAll() {
+        return 'Customers'
+    }
+    save() {
+        return 'save'
+    }
+}
+
+export default CustomerService;
+
+
+
+index.js
+//link file 
+import { firstName, lastName, salary, isActive, getValue, list } from './util'
+
+//no {} braces because export default
+import CustmerService from './CustomerService'
+
+console.log(firstName, lastName, salary, isActive, getValue(), list)
+
+let customerService = new CustmerService()
+console.log(customerService.findAll())
+.....................................................................................
+				folder structure
+
+
+project-Name
+   src
+     |
+     services
+     controllers
+     utils
+   index.js
+
+src/mock-data/orders.js
+
+
+const ORDERS = [{
+    id: 1,
+    value: 100
+}, {
+    id: 2,
+    value: 566
+}]
+
+export default ORDERS;
+
+src/services/OrderService.js
+import ORDERS from "../mock-data/orders"
+
+export default class OrderService {
+    findAll() {
+        return ORDERS
+    }
+}
+
+
+src/index.js
+import OrderService from "./services/OrderService";
+
+let orderService = new OrderService()
+
+console.log(orderService.findAll())
 
 
 
