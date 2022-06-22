@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import 'bootstrap/dist/css/bootstrap.css'
-import PropTypes from 'prop-types';
 
 const Profile = props => {
     return <div className="container">
@@ -11,26 +10,24 @@ const Profile = props => {
         <h2>Status {props.status ? "Avaiable" : "Not Available"}</h2>
     </div>
 }
-//default props 
+//defaultProps : default Props are supplied suppose if there is no property given 
+/**
+ * 
+ * ComponentName.defaultProps = {
+ *  prop1:defaultValue
+ * }
+ */
 Profile.defaultProps = {
     id: 0,
     name: '',
     status: false
 }
-//prop validation
-Profile.propTypes = {
-    id: PropTypes.number,
-    name:PropTypes.string,
-    status:PropTypes.bool
-}
+
 
 
 const App = () => {
     return <div>
-        {/* <Profile id="89" name="Subramaian" status="done" /> */}
-        {/* <Profile id={89} name="Subramaian" status="done" /> */}
-        <Profile id={89} name="Subramaian" status={true} />
-
+        <Profile id={1} name="Subramaian" status={true} />
         <Profile />
     </div>
 }
