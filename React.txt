@@ -1976,22 +1976,1472 @@ const App = props => <div>
 </div>
 
 ReactDOM.render(<App />, document.getElementById('root'))
-......................................................................................				state 
+...................................................................................................................................................................................
+				     State
+.............................................................................................
+
+..............................................................................................
+				  Dynamic Data- How to Mutate data
+..............................................................................................
+
+How to mutate data inside component?
+
+With Respect to props, data cant be changed by the component.
+
+What if i want to change the data?
+  There is pattern called state pattern.
+
+React versions : React 0, 1,2,3,14,15, - (16,17,18)
+
+In Old React (pre 16), state pattern can be introduced only inside "class Component".
+
+The word state means data of component.
+
+React.Component class has instance variable called "state"
+
+state
+ The state contains data specific to this component that may change over time.
+ The state is user-defined, and it should be a plain JavaScript object.
+
+state variable's default value is "null".
+we are expected to initalize the data of the component inside object and assign that object to state variable.
+
+state = {
+
+
+}
+Features of state:
+
+1.state is always "object" - we need to encapsulate the data inside literal object like props.
+
+Steps: 
+1.declare component class and initalize the state variable,bind in the UI
+
+import React from 'react';
+import ReactDOM from 'react-dom'
+
+//state 
+class Counter extends React.Component {
+    //initalize the state 
+    state = {
+        //here your component specific data
+       counter:0  //initalize state //
+    };
+
+    render() {
+        console.log(this.state)
+        return <>
+            <h1>Counter Application</h1>
+            <h3>Counter : {this.state.counter}</h3>
+        </>
+    }
+
+}
+
+const App = () => <div>
+    <Counter />
+</div>
+
+ReactDOM.render(<App />, document.getElementById('root'))
+
+..............................................................................................
+				User Interaction and Components
+.............................................................................................
+
+Any UI is subject to user interaction.
+
+How to interact with User interface?
+ "Event Handling"
+
+Handling Events:
+..................
+
+Handling events with React elements is very similar to handling events on DOM elements.
+
+There are some syntax differences:
+
+React events are named using camelCase, rather than lowercase.
+With JSX you pass a function as the event handler, rather than a string.
+
+HTML:
+<button onclick="activateLasers()">
+  Activate Lasers
+</button>
+JSX:
+<button onClick={method}>
+  Activate Lasers
+</button>
+
+Step 2: Declare Event Listener , bind Event Listener with button
+
+import React from 'react';
+import ReactDOM from 'react-dom'
+
+//state 
+class Counter extends React.Component {
+    //initalize the state 
+    state = {
+        //here your component specific data
+        counter: 0  //initalize state //
+    };
+
+    //event listner
+    onIncrement = () => {
+        alert('button')
+    }
+
+    render() {
+        console.log(this.state)
+        return <>
+            <h1>Counter Application</h1>
+            <h3>Counter : {this.state.counter}</h3>
+            <button onClick={this.onIncrement}>+</button>
+        </>
+    }
+
+}
+
+const App = () => <div>
+    <Counter />
+</div>
+
+ReactDOM.render(<App />, document.getElementById('root'))
+
+
+
+How React updates UI?
+
+via "render method"
+
+render:
+ 
+=>it is method called by "react engine".
+     can we call render directly inside event listener?
+        Yes,but no impact on ui update 
+    onIncrement = () => {
+         //increment value of state 
+        this.state.value = this.state.value + 1
+        console.log("value : ",this.state.value)
+        this.render()
+    }
+   Note : render should not be called directly
+
+How to call render?
+render is called by react engine only.
+how react engine will triger render?
+  via React api "setState() ,forceUpdate()"
+
+
+Syntax:
+
+setState(updater, [callback])
+
+updater = it is function
+callback =it is also function which optional parameter
+
+updater:
+ function having state mutation logic
+
+step1:
+    this.setState(function(){
+            console.log('state mutation logic goes')
+        })
+
+updater function syntax:
+
+takes two args
+
+1.state  is just variable you can have any name - holds the value of state object
+ which is called as "previous state" or "old state"
+2.props is just variable holding current props variable- which is optional
+
+function(state,[props]){
+            console.log('state mutation logic goes')
+}
+
+function(prevState){
+            console.log('state mutation logic goes')
+}
+
+Updater function returns object, what object, if you want to understand this , we need to under one more functional programming principle called "Pure function 2nd Rule".
+
+Updater function returns object, what object, if you want to understand this , we need to understand one more functional programming principle called "Pure function 2nd Rule".
+
+
+Pure Functions:
+
+Rule A:
+  If function receives input, the function returns the same input without any mutation.
+  Every Component with respect to props, are pure functions.
+
+Rule B:
+
+ What if function receives input, need to be mutated but it should follow the pure function rule.
+
+With help of "Immutablity"
+
+What is immutable?
+
+creating new object every time when you update the object , immutablity.
+
+if the function does that , that function is called pure function.
+
+pure function must return, "immutable object".
+
+//Pure functions :2nd rule
+
+//Impure function : it changes the input parameter
+function updateProfile_(profile, city) {
+    //update city and return updated profile object: 
+    profile.city = city
+    return profile;
+}
+//Pure function : i need to change the input parameter but it should be pure.
+function updateProfile(profile, city) {
+    //update city and return updated profile object: 
+    //return new Object ,by copying all properties ,with updated
+
+    //in order to return new Object we have many synatx
+    //old syntax : we copy object properties manually 
+    // return {
+    //     id: profile.id,
+    //     name: profile.name,
+    //     city: city
+    // }
+    //2nd syntax:
+    // return Object.assign({}, profile, { city: city })
+    //3rd syntax: spread notation
+    return { ...profile, city }
+}
+
+let profile = {
+    id: 1,
+    name: 'Subramanian',
+    city: 'Chennai'
+}
+// console.log('Before Update', profile)
+// console.log('After Update', updateProfile(profile, 'Coimbatore'))
+let updatedProfile = updateProfile(profile, 'Coimbatore')
+console.log(profile === updatedProfile ? "Same Object " : " Different Object")
+
+What you can make immutable?
+
+->literal objects
+->Array objects
+
+//Pure functions :2nd rule
+
+//Impure function : it changes the input parameter
+function updateProfile_(profile, city) {
+    //update city and return updated profile object: 
+    profile.city = city
+    return profile;
+}
+//Pure function : i need to change the input parameter but it should be pure.
+function updateProfile(profile, city) {
+    //update city and return updated profile object: 
+    //return new Object ,by copying all properties ,with updated
+
+    //in order to return new Object we have many synatx
+    //old syntax : we copy object properties manually 
+    // return {
+    //     id: profile.id,
+    //     name: profile.name,
+    //     city: city
+    // }
+    //2nd syntax:
+    // return Object.assign({}, profile, { city: city })
+    //3rd syntax: spread notation
+    return { ...profile, city }
+}
+
+let profile = {
+    id: 1,
+    name: 'Subramanian',
+    city: 'Chennai'
+}
+// console.log('Before Update', profile)
+// console.log('After Update', updateProfile(profile, 'Coimbatore'))
+let updatedProfile = updateProfile(profile, 'Coimbatore')
+console.log(profile === updatedProfile ? "Same Object " : " Different Object")
+
+//arrays and immutatblity
+//impure
+// function addTodo(todos, newTodo) {
+//     return todos.push(newTodo)
+// }
+//pure : how to return array immutable
+function addTodo(todos, newTodo) {
+    //return todos.concat(newTodo)
+    return [...todos,newTodo]
+}
+let todos = [{
+    title: 'Learn react',
+    done: true
+}];
+
+Object.freeze(todos)
+console.log(addTodo(todos, { title: 'Learn Pure functions', done: false }))
+
+List of Array immutable apis:
+
+1.concat
+2.map
+3.filter
+3.reduce
+
+updaterFunction Return value:
+
+=>Should return always immutable object.
+
+                    "setState method is pure function"
+
+
+import React from 'react';
+import ReactDOM from 'react-dom'
+
+//state 
+class Counter extends React.Component {
+    //initalize the state 
+    state = {
+        //here your component specific data
+        counter: 0  //initalize state //
+    };
+
+    //event listner
+    onIncrement = () => {
+        // this.state.counter = this.state.counter + 1
+        // console.log("Inside Listener => ", this.state.counter);
+        // //trigger setState method
+        // this.setState(function (prvState) {
+        //     console.log("old state => ", prvState)
+        //     // return {
+        //     //     counter: prvState.counter + 1
+        //     // }
+        //     // return Object.assign({}, prvState, { counter: prvState.counter + 1 })
+        //     return { ...prvState, counter: prvState.counter + 1 }
+        // })
+        this.setState((prvState) => {
+            console.log("old state => ", prvState)
+            return { ...prvState, counter: prvState.counter + 1 }
+        })
+    }
+
+    render() {
+        console.log("Current State => ", this.state)
+        return <>
+            <h1>Counter Application</h1>
+            <h3>Counter : {this.state.counter}</h3>
+            <button onClick={this.onIncrement}>+</button>
+        </>
+    }
+
+}
+
+const App = () => <div>
+    <Counter />
+</div>
+
+ReactDOM.render(<App />, document.getElementById('root'))
+..............................................................................................
+				Event Binding Syntaxs:
+
+import React from 'react';
+import ReactDOM from 'react-dom'
+
+//state 
+class Counter extends React.Component {
+    //initalize the state 
+    state = {
+        counter: 0
+    };
+
+    //event listner
+    onIncrement = () => {
+        this.setState((prvState) => {
+            console.log("old state => ", prvState)
+            return { ...prvState, counter: prvState.counter + 1 }
+        })
+    }
+
+    render() {
+        console.log("Current State => ", this.state)
+        return <>
+            <h1>Counter Application</h1>
+            <h3>Counter : {this.state.counter}</h3>
+            <button onClick={this.onIncrement}>+</button>
+            <button onClick={() => {
+                this.setState(prvState => ({ ...prvState, counter: prvState.counter - 1 }))
+            }}>-</button>
+
+        </>
+    }
+
+}
+
+const App = () => <div>
+    <Counter />
+</div>
+
+ReactDOM.render(<App />, document.getElementById('root'))
+
+
+...................
+//state :
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+
+class Cart extends React.Component {
+    state = {
+        items: []  //inital state
+    }
+    //event listener
+    onAdd = () => {
+        this.setState(prevState => {
+            return {
+                items: prevState.items.concat("Item")
+            }
+        })
+    }
+
+    render() {
+        console.log(this.state)
+        return <div>
+            <h1>Cart - Using State</h1>
+            <ul>
+                {this.state.items.map(item => {
+                    return <li>{item}</li>
+                })}
+            </ul>
+            <button onClick={this.onAdd} >Add To Cart</button>
+        </div>
+    }
+}
+
+
+
+
+const App = () => <div>
+    <Cart />
+</div>
+ReactDOM.render(<App />, document.getElementById('root'))
+
+.....................................................................................
+
+
+//state :
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+/**
+ * String str="hello"
+ * String newStr = str.toUpperCase()
+ * str memory location and newStr memoryLocation
+ */
+
+class Counter extends React.Component {
+    state = {
+        count: 0
+    }
+    //event listener
+    onIncrement = () => {
+        this.setState(prevState => {
+            console.log("old State =>", prevState)
+            return { ...prevState, count: prevState.count + 1 }
+        })
+    }
+
+
+    render() {
+        console.log("current State =>", this.state)
+        return <div>
+            <h1>CounterApp - Using State</h1>
+            <h2>Counter : {this.state.count}</h2>
+            <button onClick={this.onIncrement} >+</button>
+            {/* Inline listener */}
+            <button onClick={()=>{
+                this.setState((prevState)=>({prevState,count: prevState.count -1}))
+            }} >-</button>
+
+        </div>
+    }
+}
+
+
+const App = () => <div>
+    <Counter />
+</div>
+ReactDOM.render(<App />, document.getElementById('root'))
+..................................................................................
+				Multi state
+....................................................................................
+import React from 'react';
+import ReactDOM from 'react-dom'
+
+//state 
+class Counter extends React.Component {
+    //initalize the state 
+    state = {
+        incValue: 10,
+        decValue: 100
+    };
+
+    //event listner
+    onIncrement = () => {
+        this.setState((prvState) => {
+            console.log("old state => ", prvState)
+            return { ...prvState, incValue: prvState.incValue + 1 }
+        })
+    }
+
+    render() {
+        console.log("Current State => ", this.state)
+        return <>
+            <h1>Counter Application</h1>
+            <h3>Increment Value : {this.state.incValue} - Decrement Value {this.state.decValue}</h3>
+            <button onClick={this.onIncrement}>+</button>
+            <button onClick={() => {
+                this.setState(prvState => ({ ...prvState, decValue: prvState.decValue - 1 }))
+            }}>-</button>
+
+        </>
+    }
+
+}
+
+const App = () => <div>
+    <Counter />
+</div>
+
+ReactDOM.render(<App />, document.getElementById('root'))
+...................................................................................
+			  State and Prop 
+...................................................................................
+
+Container component
+   Component having state,bizlogic
+Presentational component
+  component having only ui
+
+Dynamic props, state as prop, function as prop
+
+//state :
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+
+//having : state + biz logic + ui
+class Counter extends React.Component {
+    state = {
+        count: 0  //inital state
+    }
+    //event listener
+    onIncrement = () => {
+        this.setState(prevState => ({ ...prevState, count: prevState.count + 1 }))
+    }
+    render() {
+        return <div>
+            {/* dynamic props , function as prop */}
+            <CounterUI count={this.state.count} onIncrement={this.onIncrement} />
+        </div>
+    }
+}
+
+//functional component 
+const CounterUI = props => {
+    return <div>
+        <h1>CounterApp - Using State</h1>
+        <h2>Counter : {props.count}</h2>
+        <button onClick={props.onIncrement} >+</button>
+    </div>
+}
+
+
+const App = () => <div>
+    <Counter />
+</div>
+ReactDOM.render(<App />, document.getElementById('root'))
+.....................................................................................
+..............................................................................................
+		 How to get Input from the User -How to use Syn Event Object
+...........................................................................................
+
+SyntheticEvent object is passed as arg to event listner
+
+ onIncrement = (evt) => {
+        
+ }
+
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom'
+import 'bootstrap/dist/css/bootstrap.css'
+
+
+class UserInput extends Component {
+    state = {
+        text: 'default'
+    }
+    onUpdate = evt => {
+        //read textbox value
+      const value= evt.target.value
+      this.setState(prevState=>({...prevState,text:value}))
+    }
+
+    render() {
+        return <div className="container">
+            <h1>User Input Application</h1>
+            <h1> {this.state.text}</h1>
+            <input onChange={this.onUpdate } />
+        </div>
+    }
+
+}
+
+
+const App = props => <div>
+    <UserInput />
+</div>
+ReactDOM.render(<App />, document.getElementById('root'))
+.....................................................................................
+
+.............................................................................................
+	   How to show data in the UI which was fetched from the WebServices
+..............................................................................................
+
+There are three possibilites you have when you do ajax calls
+
+1.You may have data on time
+2.You may not have data on time - delay or slow
+    incase of slow data fetch we show "spinners"
+3.you may get error
+    server down,network failure,api malfunctions....
+
+You have to write code according to state of api
+
+ - success on time
+ - success with spinner
+ - error 
+
+if you have to write if condition to check these three status, according to the status we switch mode.
+
+How to write if ...else conditions in side jsx?
+   Conditional Rendering
+
+
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom'
+import 'bootstrap/dist/css/bootstrap.css'
+
+const Error = props => {
+    return <>
+        <h2>{props.error}</h2>
+    </>
+}
+const Spinner = props => {
+    return <>
+        <h2 style={{ backgroundColor: 'yellow' }}>Loading...</h2>
+    </>
+}
+
+class Todo extends Component {
+
+    state = {
+        error: null,
+        isLoaded: false, //spiner status
+        todos: [] // data
+    }
+
+    render() {
+        const { error, isLoaded, todos } = this.state;
+        if (error) {
+            return <Error error={error} />
+        } else if (!isLoaded) {
+            return <Spinner />
+        } else {
+            return <TodoList todos={todos} />
+        }
+
+    }
+    componentDidMount() {
+        const url = 'https://jsonplaceholder.typicode.com/todos'
+        fetch(url).then(response => response.json()).then(todos => {
+            // console.log(todos)
+            setTimeout(() => {
+                this.setState(previousState => {
+                    return { ...previousState, todos: previousState.todos.concat(todos), isLoaded: true };
+                });
+            }, 5000)
+
+        }).catch(err => {
+            // console.log(err)
+            this.setState({
+                isLoaded: true,
+                err
+            });
+        });
+    }
+}
+
+const TodoList = props => {
+    const { todos } = props
+    return <ul className="list-group">
+        {todos.map((todo, index) => (
+            <li key={index}>
+                <span className="badge badge-pill badge-primary">
+                    {todo.id}
+                </span>
+                <span>
+                    {todo.title}
+                </span>
+            </li>
+        ))}
+    </ul>
+}
+
+const App = () => <div className="container">
+    <Todo />
+</div>
+
+ReactDOM.render(<App />, document.getElementById('root'))
 ....................................................................................
 
-How to mutate the UI?
-How to add event handler?
-How to do state mutation?
+..............................................................................................
+				 Update
+.............................................................................................
 
-Inside component
+Update Phase gets trigger once , the component is mounted into DOM, when user starts interaction like clicking button, typing in the user....
 
-outside component - Redux
+An update can be caused by changes to props or state. These methods are called in the following order when a component is being re-rendered:
+
+static getDerivedStateFromProps() - called both in mount and update cycle
+shouldComponentUpdate() -
+render()
+getSnapshotBeforeUpdate()
+componentDidUpdate()
+
+
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import 'bootstrap/dist/css/bootstrap.css'
+
+class ParentComponent extends Component {
+    state = {
+        i: 0
+    }
+    //mount phase methods
+    constructor() {
+        super()
+        console.log('Parent Constructor is called')
+    }
+
+
+    render() {
+        console.log('Parent render is called')
+        return <div>
+            <h1>Parent Component</h1>
+            <h1>{this.state.i} </h1>
+            <button onClick={() => {
+                this.setState((oldstate) => ({ ...oldstate, i: oldstate.i + 1 }))
+            }}>+</button>
+            <ChildComponent {...this.state} />
+        </div>
+    }
+
+    //after mount
+    componentDidMount() {
+        console.log('Parent ComponentDidMount is called')
+    }
+    componentDidUpdate(){
+        console.log('Parent componentDidUpdate is called')
+    }
+
+
+}
+
+class ChildComponent extends Component {
+
+    //mount phase methods
+    constructor() {
+        super()
+        console.log('ChildComponent Constructor is called')
+    }
+    render() {
+        console.log('ChildComponent render is called', this.props)
+
+        return <div>
+            <h1>Child Component</h1>
+        </div>
+    }
+
+    componentDidMount() {
+        console.log('ChildComponent ComponentDidMount is called')
+    }
+    componentDidUpdate(){
+        console.log('Child componentDidUpdate is called')
+    }
 
 
 
+}
+
+ReactDOM.render(<ParentComponent />, document.getElementById('root'))
+....................................................................................
+				Hooks
+
+
+Why hooks?
+
+1. Code Resue
+  if you to repeate biz logic of component , in class component is not possible
+via hooks(functions) it is possible
+
+2.Code reduction
+  to eleminate lot of boiler plate code
+
+
+What is hook?
+ It is a new feature introduced in react 16.
+ Simple abstraction for class compoents-  how to remove classes from react.
+
+Intention is functional component for every things.
+
+objective of hooks:
+
+1.to eleminate class components as much possible.
+2.Resuable application behaviours
+   eg:ajax calls
+
+
+Hook is just simple javascript function.
+which may take arg or may not.
+Which may or may not return something 	
+
+
+every hook function starts with
+  "use"+functionName ==>hook Syntax
+
+eg:
+"useState"
+"useContext"
+"useEffect"
+"useAjax"
+"useWebSocket"
+"useLayout"
+etc....
+you can create your own hooks as well.
+
+//state :
+import React, { useState } from 'react'
+import ReactDOM from 'react-dom'
+
+// class Counter extends React.Component {
+
+//     state = {
+//         count: 0  //inital state
+//     }
+//     onIncrement = () => {
+//         this.setState(prevState => ({ ...prevState, count: prevState.count + 1 }))
+//     }
+
+//     render() {
+//         console.log(this.state)
+//         return <div>
+//             <h1>CounterApp - Using State</h1>
+//             <h2>Counter : {this.state.count}</h2>
+//             <button onClick={this.onIncrement} >+</button>
+//         </div>
+//     }
+// }
+
+const Counter = props => {
+    //state 
+    const [count, setCount] = useState(0)
+    const [like, setLike] = useState(100)
+    //literal object 
+    const [counter, setCounter] = useState({ value: 10 })
+
+    //listener
+    const onIncrement = evt => {
+        //state mutation
+        // setCount(prevState => {
+        //     return prevState + 1
+        // })
+        setCount(count + 1)
+    }
+
+    return <div>
+        <h1>Counter App- Using hooks</h1>
+        <h2>Counter: {count}</h2>
+        <button onClick={onIncrement}>+</button>
+        <button onClick={() => {
+            setCount(count - 1)
+        }}>-</button>
+        <hr />
+        <h2>Like {like}</h2>
+        <button onClick={() => {
+            setLike(like + 1)
+        }}>Like</button>
+        <hr />
+        <h1>Literal Object {counter.value}</h1>
+        <button onClick={() => {
+            setCounter((oldState) => {
+                return { ...oldState, value: oldState.value + 1 }
+            })
+        }}>Like</button>
+    </div>
+}
+
+const App = () => <div>
+    <Counter />
+</div>
+ReactDOM.render(<App />, document.getElementById('root'))
+...................................................................................
+			  Component Life cycles and Hooks
+....................................................................................
+comonentDidMount:
+ Used for doing some resource intensive tasks, such as setting up ajax calls for inital page.
+ It is called after inital render
+
+compoentDidUpdate:
+  called after every update finishes.
+
+How to write these two life cycle methods inside functional components.
+//hooks : componentDidMount - useEffect
+import React, { useEffect, useState } from 'react'
+import ReactDOM from 'react-dom'
+
+
+const Todos = props => {
+    //state
+    const [state, setState] = useState({
+        error: null,
+        isLoaded: false, //spiner status
+        todos: [] // data
+    })
+
+    //componentDidMount
+    useEffect(() => {
+        fetch('https://jsonplaceholder.typicode.com/todos')
+            .then(response => response.json())
+            .then(todos => {
+                setTimeout(() => {
+                    setState(prevState => ({ ...prevState, todos: prevState.todos.concat(todos), isLoaded: true }))
+                }, 5000)
+            })
+            .catch(err => {
+                setState(prevState => ({ ...prevState, isLoaded: true, error: err }))
+            });
+    }, [])
+
+    //render code
+
+    const { error, isLoaded, todos } = state;
+    if (error) {
+        return <Error error={error} />
+    } else if (!isLoaded) {
+        return <Spinner />
+    } else {
+        return <div>
+            <h1>Todo App</h1>
+            <ul>
+                {state.todos.map(todo => {
+                    return <li key={todo.id}>{todo.title}</li>
+                })}
+            </ul>
+        </div>
+    }
 
 
 
+}
+
+const Error = props => {
+    return <>
+        <h2>{props.error}</h2>
+    </>
+}
+const Spinner = props => {
+    return <>
+        <h2 style={{ backgroundColor: 'yellow' }}>Loading...</h2>
+    </>
+}
+
+
+const App = props => <div>
+    <h1>Ajax calls inside FuncitionalComponent</h1>
+    <Todos />
+</div>
+
+ReactDOM.render(<App />, document.getElementById('root'))
+......................................................................................				State Outside Component
+...................................................................................
+How to mantain state outside component?
+
+React is just view libs, which is going to have only view, what if your application grows, if you need to deal with more state.
+
+if some state , i am going to resue inside many components across the applications
+
+..............................................................................................
+				     Redux
+.............................................................................................
+
+What is Redux?​
+It helps to understand what this "Redux" thing is in the first place.
+What does it do?
+What problems does it help me solve? 
+Why would I want to use it?
+
+Redux is a "pattern and library" for managing and updating application state, using events called "actions".
+It serves as a centralized store for state that needs to be used across your entire application, with rules ensuring that the state can only be updated in a predictable fashion.
+
+       In the above defintion you can find out, only one thing in common - "state"
+
+In React we manage state inside component - Statefull component.
+
+if you want to share the data(state) there is only one pattern
+
+Parent ---to---Child Pattern via props
+
+What if i want to share the data across the application 
+
+ Compoent to Component any where in the hierachy -  Redux.
+.............................................................................................
+				Redux Pattern- Flux Pattern
+............................................................................................
+
+Flux is design pattern , created by facebook in order to share the data among the ui(components) with proper channels(flow).
+
+Face book initally designed the flux pattern and implemented this pattern via lib called flux.js
+
+Now a days "flux.js" lib has been deprecated instead we have to use "redux/Mobx"
+
+Flux design pattern has been implemented inside redux.
+..............................................................................................
+					Flux Pattern
+
+In flux Pattern data is moved in unidirectional flow- one way data flow.
+
+Flux Pattern Components:
+.......................
+
+1.View layer
+   Just it presents The Application User face.
+   React is view
+
+2.State layer
+   Flux.js / Redux / Mobx
+   It manages the state(data), which maniuplates/updates the state for the entire application.
+hen Should I Use Redux?​
+   Redux helps you deal with shared state management, but like any tool, it has tradeoffs. There are more concepts to learn, and more code to write. It also adds some indirection to your code, and asks you to follow certain restrictions. It's a trade-off between short term and long term productivity.
+
+Redux is more useful when:
+
+1.You have large amounts of application state that are needed in many places in the app
+2.The app state is updated frequently over time
+3.The logic to update that state may be complex
+4.The app has a medium or large-sized codebase, and might be worked on by many people
+
+
+Redux Terms and Concepts​
+........................
+
+1.State Management​:
+
+ The application is composed of different modules(UI).
+If you take, Banking Application
+ -transaction
+ -User screen 
+ -Deposit and withdrawal screen
+
+The application state/ app state:
+  The data of application, which mimics the database design in the server side apps.
+
+How the database schema has collection of tables ,each table has data related to paricular domain like users,products.
+
+The redux also maintains in memory database schema, which stores the data of UI modules.
+
+                       "Redux stores the app state inside one single literal 
+					 Object"
+
+
+Redux database is "Single javascript literal Object"
+
+eg:
+  const appState = {
+   
+     screen1: {},
+     screen2:{},
+     screen3:{}     
+
+  }
+ const appState = {
+   
+     transaction: {}, =>Change state===> new AppState => Listener===>View will get fresh State
+     user:{},
+     accounts:{}     
+
+  }
+
+"one-way data flow":
+
+1.State describes the condition of the app at a specific point in time.
+2.The UI is rendered based on that state When something happens (such as a user clicking a button), the state is updated based on what occurred
+3.The UI re-renders based on the new state
+.............................................................................................
+
+Actions
+ An action is a plain JavaScript object that has a "type" field.
+ You can think of an action as an event that describes something that happened in the application.
+
+The type field should be a string that gives this action a descriptive name, like "todos/todoAdded".
+
+We usually write that type string like "domain/eventName", where the first part is the feature or category that this action belongs to, and the second part is the specific thing that happened.
+
+An action object can have other fields with additional information about what happened. By convention, we put that information in a field called payload.
+
+syntax:
+
+const increment = {
+  type:"counter/increment",
+}
+
+const addTodo = {
+  type:"todo/addTodo",
+  payload : {id:1,text:'learn redux'}
+
+}
+
+
+Reducers:
+   A reducer is a function that receives the current state and an action object, decides how to update the state if necessary, and returns the new state: (state, action) => newState. You can think of a reducer as an event listener which handles events based on the received action (event) type.
+
+ Reducer is a pure function, which is eq to setState or useState in react.
+
+Reducers must always follow some specific rules:
+
+1.They should only calculate the new state value based on the state and action arguments
+
+2.They are not allowed to modify the existing state. Instead, they must make immutable updates, by copying the existing state and making changes to the copied values.
+3.They must not do any asynchronous logic, calculate random values, or cause other "side effects"
+
+Syntax:
+(state, action) => newState
+
+function counter(state,action){
+
+ switch(action.type){
+     case "counter/increment":
+ 	return {...state,value:state.counter.value + 1}
+
+     default:
+        return state;     
+
+ } 
+
+}
+
+
+Dispatchers /dispatch:
+The Redux store has a method called dispatch.
+The only way to update the state is to call store.dispatch() and pass in an action object. The store will run its reducer function and save the new state value inside, and we can call getState() to retrieve the updated value
+
+const increment = {
+  type:"counter/increment",
+}
+
+store.dispatch(increment)=>store.reducer()=>newState=>listener=>react rerender screen
+
+
+Store:
+
+ Store is object
+
+Role of Store object:
+1.stores the app state
+2.control communication flows between UI and Redux.
+
+Api:
+1.getState()
+2.dispatch(action)
+3.subscribe(listener)
+4.replaceReducer(nextReducer)
+			 
+
+
+//redux 
+import React from "react";
+import ReactDOM from "react-dom";
+import { useSelector, Provider, useDispatch } from "react-redux";
+import { createStore } from "redux";
+
+
+//biz logic : reducer : pure function 
+const counterReducer = (state = {
+    count: 10
+}, action) => {
+    switch (action.type) {
+        case 'counter/increment':
+            //immutable logic
+            return { ...state, count: state.count + 1 }
+        default:
+            return state;
+    }
+}
+//create store 
+const store = createStore(counterReducer)
+
+
+//react
+
+const Counter = props => {
+
+    // How to access redux state from the react
+    const counter = useSelector(state => {
+        return state.count
+    })
+    const dispatch = useDispatch()
+
+    //event listener
+    const onIncrement = () => {
+        //we need to call reducer , because the logic is written there only 
+       //action 
+        // const incrementAction = {
+        //     type: 'counter/increment'
+        // }
+        // dispatch(incrementAction)
+        dispatch({
+            type: 'counter/increment'
+        })
+    }
+
+    return <div>
+        <h1>Counter App Using React - Redux</h1>
+        <h1>Counter {counter}</h1>
+        <button onClick={onIncrement}>+</button>
+    </div>
+}
+
+const App = () => <div>
+    {/* Provider injects  */}
+    <Provider store={store}>
+        <Counter />
+    </Provider>
+</div>
+
+ReactDOM.render(<App />, document.getElementById('root'))
+....................................................................................
+				Multi Reducer
+.....................................................................................
+
+Multi Reducer- Multi component how to write logic
+
+//redux 
+import React from "react";
+import ReactDOM from "react-dom";
+import { useSelector, Provider, useDispatch } from "react-redux";
+import { createStore, combineReducers } from "redux";
+
+
+const incrementReducer = (state = {
+    count: 10
+}, action) => {
+    switch (action.type) {
+        case 'counter/increment':
+            //immutable logic
+            return { ...state, count: state.count + 1 }
+        default:
+            return state;
+    }
+}
+
+const decrementReducer = (state = {
+    count: 10
+}, action) => {
+    switch (action.type) {
+        case 'counter/decrement':
+            //immutable logic
+            return { ...state, count: state.count - 1 }
+        default:
+            return state;
+    }
+}
+
+const rootReducer = combineReducers({
+    increment: incrementReducer,
+    decrement: decrementReducer
+})
+//create store 
+const store = createStore(rootReducer)
+//react
+
+const Increment = props => {
+    // How to access redux state from the react
+    //multi reducer :
+    const counter = useSelector(globalState => {
+        //globalState.reducerName.yourState
+        console.log(globalState)
+        return globalState.increment.count;
+    })
+    const dispatch = useDispatch()
+
+    //event listener
+    const onIncrement = () => {
+        dispatch({
+            type: 'counter/increment'
+        })
+    }
+
+    return <div>
+        <h1>Counter App Using React - Redux-Increment</h1>
+        <h1>Counter {counter}</h1>
+        <button onClick={onIncrement}>+</button>
+    </div>
+}
+
+const Decrement = props => {
+
+    // How to access redux state from the react
+    const counter = useSelector(globalState => {
+        //globalState.reducerName.yourState
+        console.log(globalState)
+        return globalState.decrement.count;
+    })
+    const dispatch = useDispatch()
+
+    //event listener
+    const onDecrement = () => {
+        dispatch({
+            type: 'counter/decrement'
+        })
+    }
+
+    return <div>
+        <h1>Counter App Using React - Redux-Decrement</h1>
+        <h1>Counter {counter}</h1>
+        <button onClick={onDecrement}>-</button>
+    </div>
+}
+
+const App = () => <div>
+    {/* Provider injects  */}
+    <Provider store={store}>
+            <Increment />
+            <hr />
+            <Decrement/>
+    </Provider>
+</div>
+
+ReactDOM.render(<App />, document.getElementById('root'))
+..................................................................................
+			 Passing input from react to redux-Payload
+
+how to pass input?
+via actions
+
+let incrementByAmount = { 
+  type:'counter/incrementByAmount',
+  payload:10
+ 
+}
+//redux 
+import React from "react";
+import ReactDOM from "react-dom";
+import { useSelector, Provider, useDispatch } from "react-redux";
+import { createStore, combineReducers } from "redux";
+
+
+const incrementReducer = (state = {
+    count: 10
+}, action) => {
+    switch (action.type) {
+        case 'counter/incrementByAmount':
+            //immutable logic
+            return { ...state, count: state.count + action.payload }
+        default:
+            return state;
+    }
+}
+
+const decrementReducer = (state = {
+    count: 10
+}, action) => {
+    switch (action.type) {
+        case 'counter/decrement':
+            //immutable logic
+            return { ...state, count: state.count - 1 }
+        default:
+            return state;
+    }
+}
+
+const rootReducer = combineReducers({
+    increment: incrementReducer,
+    decrement: decrementReducer
+})
+//create store 
+const store = createStore(rootReducer)
+//react
+
+const Increment = props => {
+    // How to access redux state from the react
+    //multi reducer :
+    const counter = useSelector(globalState => {
+        //globalState.reducerName.yourState
+        console.log(globalState)
+        return globalState.increment.count;
+    })
+    const dispatch = useDispatch()
+
+    //event listener
+    const onIncrement = () => {
+        dispatch({
+            type: 'counter/incrementByAmount',
+            payload: 10
+        })
+    }
+
+    return <div>
+        <h1>Counter App Using React - Redux-Increment</h1>
+        <h1>Counter {counter}</h1>
+        <button onClick={onIncrement}>+</button>
+    </div>
+}
+
+const Decrement = props => {
+
+    // How to access redux state from the react
+    const counter = useSelector(globalState => {
+        //globalState.reducerName.yourState
+        console.log(globalState)
+        return globalState.decrement.count;
+    })
+    const dispatch = useDispatch()
+
+    //event listener
+    const onDecrement = () => {
+        dispatch({
+            type: 'counter/decrement'
+        })
+    }
+
+    return <div>
+        <h1>Counter App Using React - Redux-Decrement</h1>
+        <h1>Counter {counter}</h1>
+        <button onClick={onDecrement}>-</button>
+    </div>
+}
+
+const App = () => <div>
+    {/* Provider injects  */}
+    <Provider store={store}>
+        <Increment />
+        <hr />
+        <Decrement />
+    </Provider>
+</div>
+
+ReactDOM.render(<App />, document.getElementById('root'))
 
 
 

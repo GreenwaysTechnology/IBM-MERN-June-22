@@ -9,9 +9,9 @@ const incrementReducer = (state = {
     count: 10
 }, action) => {
     switch (action.type) {
-        case 'counter/incrementByAmount':
+        case 'counter/increment':
             //immutable logic
-            return { ...state, count: state.count + action.payload }
+            return { ...state, count: state.count + 1 }
         default:
             return state;
     }
@@ -50,8 +50,7 @@ const Increment = props => {
     //event listener
     const onIncrement = () => {
         dispatch({
-            type: 'counter/incrementByAmount',
-            payload: 10
+            type: 'counter/increment'
         })
     }
 
@@ -89,9 +88,9 @@ const Decrement = props => {
 const App = () => <div>
     {/* Provider injects  */}
     <Provider store={store}>
-        <Increment />
-        <hr />
-        <Decrement />
+            <Increment />
+            <hr />
+            <Decrement/>
     </Provider>
 </div>
 
