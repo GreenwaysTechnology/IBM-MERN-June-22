@@ -1,98 +1,107 @@
-//redux 
-import React from "react";
-import ReactDOM from "react-dom";
-import { useSelector, Provider, useDispatch } from "react-redux";
-import { createStore, combineReducers } from "redux";
+//router
+import React, { useEffect } from 'react'
+import ReactDOM from "react-dom"
+import { Provider, useSelector, useDispatch } from 'react-redux';
+import { createStore } from 'redux';
+import { BrowserRouter, Routes, Route, Link, Outlet } from 'react-router-dom';
 
 
-const incrementReducer = (state = {
+//redux
+//biz logic : reducer : pure function 
+const counterReducer = (state = {
     count: 10
 }, action) => {
     switch (action.type) {
-        case 'counter/incrementByAmount':
+        case 'counter/increment':
             //immutable logic
-            return { ...state, count: state.count + action.payload }
+            return { ...state, count: state.count + 1 }
         default:
             return state;
     }
 }
-
-const decrementReducer = (state = {
-    count: 10
-}, action) => {
-    switch (action.type) {
-        case 'counter/decrement':
-            //immutable logic
-            return { ...state, count: state.count - 1 }
-        default:
-            return state;
-    }
-}
-
-const rootReducer = combineReducers({
-    increment: incrementReducer,
-    decrement: decrementReducer
-})
 //create store 
-const store = createStore(rootReducer)
-//react
+const store = createStore(counterReducer)
+/////////////////////////////////////////////////////////////////////////////////////
+//react 
+const Counter = props => {
 
-const Increment = props => {
-    // How to access redux state from the react
-    //multi reducer :
-    const counter = useSelector(globalState => {
-        //globalState.reducerName.yourState
-        console.log(globalState)
-        return globalState.increment.count;
+    const counter = useSelector(state => {
+        return state.count
     })
     const dispatch = useDispatch()
 
     //event listener
     const onIncrement = () => {
+
         dispatch({
-            type: 'counter/incrementByAmount',
-            payload: 10
+            type: 'counter/increment'
         })
     }
 
     return <div>
-        <h1>Counter App Using React - Redux-Increment</h1>
+        <h1>Counter App Using React - Redux</h1>
         <h1>Counter {counter}</h1>
         <button onClick={onIncrement}>+</button>
     </div>
 }
 
-const Decrement = props => {
+//Layout
+const Layout = () => {
+    // menus
+    return <div><nav>
+        <ul>
+            <li>
+                <Link to="/">Home</Link>
+            </li>
+            <li>
+                <Link to="/about">About</Link>
+            </li>
+            <li>
+                <Link to="/dashboard">Dashboard</Link>
+            </li>
+            <li>
+                <Link to="/transcations">Transactions</Link>
+            </li>
+            <li>
+                <Link to="/counter">Redux-Counter</Link>
+            </li>
+        </ul>
+    </nav>
+        <hr />
 
-    // How to access redux state from the react
-    const counter = useSelector(globalState => {
-        //globalState.reducerName.yourState
-        console.log(globalState)
-        return globalState.decrement.count;
-    })
-    const dispatch = useDispatch()
-
-    //event listener
-    const onDecrement = () => {
-        dispatch({
-            type: 'counter/decrement'
-        })
-    }
-
-    return <div>
-        <h1>Counter App Using React - Redux-Decrement</h1>
-        <h1>Counter {counter}</h1>
-        <button onClick={onDecrement}>-</button>
+        {/* An <Outlet> renders whatever child route is currently active,
+        so you can think about this <Outlet> as a placeholder for
+        the child routes we defined above. */}
+        <Outlet />
     </div>
 }
 
-const App = () => <div>
-    {/* Provider injects  */}
-    <Provider store={store}>
-        <Increment />
-        <hr />
-        <Decrement />
+const Home = () => <h1>IBM-home</h1>
+const About = () => <h1>IBM-about</h1>
+const Dashboard = () => <h1>IBM-dashboard</h1>
+const Transactions = () => <h1>TransactionPage</h1>
+
+
+
+
+const App = () => {
+
+    return <Provider store={store}>
+        {/* Router */}
+        <BrowserRouter>
+            <Routes>
+                {/* root route */}
+                <Route path="/" element={<Layout />}>
+                    {/* Child routes */}
+                    <Route index element={<Home />} />
+                    <Route path="about" element={<About />} />
+                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="transcations" element={<Transactions />} />
+                    <Route path="counter" element={<Counter />} />
+                </Route>
+            </Routes>
+        </BrowserRouter>
     </Provider>
-</div>
+}
 
 ReactDOM.render(<App />, document.getElementById('root'))
